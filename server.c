@@ -1,10 +1,8 @@
 #include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <errno.h>
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>
@@ -68,8 +66,7 @@ int main(int argc, char *argv[]) {
         //Create a thread to handle the client
         pthread_t thread;
         int *socket_desc = &client_socket;
-        if( pthread_create(&thread, NULL , connection_handler , (void*) socket_desc) < 0)
-        {
+        if( pthread_create(&thread, NULL , connection_handler , (void*) socket_desc) < 0) {
             perror("pthread_create");
             close(client_socket);
             free(socket_desc);
@@ -95,14 +92,14 @@ void *connection_handler(void *socket_desc) {
             write(client_socket , miaou, strlen(miaou));
         }
         else if(read_size == 0){
-            printf("Client disconnected");
+            printf("client disconnected\n");
             fflush(stdout);
-            free(socket_desc);
+            //free(socket_desc);
             return 0;
         }
         else if(read_size == -1){
             perror("recv failed");
-            free(socket_desc);
+            //free(socket_desc);
             return 0;
         }
     }
